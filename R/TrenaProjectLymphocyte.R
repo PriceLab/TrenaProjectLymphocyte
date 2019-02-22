@@ -38,15 +38,15 @@ TrenaProjectLymphocyte <- function(quiet=TRUE)
    geneSets <- list()
    for(file in geneSet.files){
       full.path <- file.path(directory, file)
-      genes <- scan(full.path, sep="\t", what=character(0), quiet=TRUE)
+      genes <- scan(full.path, sep="\t", what=character(0), quiet=TRUE, comment.char="#")
       geneSet.name <- sub(".txt", "", file)
       geneSets[[geneSet.name]] <- genes
       }
 
-   footprintDatabaseNames <- NA_character_;
+   footprintDatabaseNames <- c("lymphoblast_hint_16",  "lymphoblast_hint_20", "lymphoblast_wellington_16", "lymphoblast_wellington_20")
    expressionDirectory <- system.file(package="TrenaProjectLymphocyte", "extdata", "expression")
    variantsDirectory <- system.file(package="TrenaProjectLymphocyte", "extdata", "variants")
-   footprintDatabaseHost <- NA_character_;
+   footprintDatabaseHost <- "khaleesi.systemsbiology.net"
 
    covariatesFile <- NA_character_;
 
