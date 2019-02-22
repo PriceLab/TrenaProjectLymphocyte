@@ -1,9 +1,6 @@
-# https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5764389/
-PSRC1
+# some genes from https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5764389
 HLA-DRB1
 HLA-DQA1
-ATXN2
-CHRNA3
 APOC1
 BEND3
 FPGT
@@ -13,11 +10,7 @@ MICA
 MICB
 TOX
 ZW10
-SEMA6D
 EGLN2
 CYP2A6
-EXOC3L2
-MARK4
 C20orf187
-CHRNA4
 

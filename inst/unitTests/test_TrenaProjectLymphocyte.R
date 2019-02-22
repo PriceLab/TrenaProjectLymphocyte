@@ -61,7 +61,12 @@ test_expressionMatrices <- function()
    mtx <- getExpressionMatrix(tProj, expected[1])
    checkEquals(dim(mtx), c(56202, 407))
    checkEquals(head(sort(rownames(mtx)), n=3), c("ENSG000000000030", "ENSG00000000005","ENSG00000000419"))
+   checkTrue(max(mtx) < 100)
 
+   mtx <- getExpressionMatrix(tProj, expected[2])
+   checkEquals(dim(mtx), c(45245, 407))
+   checkEquals(head(sort(rownames(mtx)), n=3), c("A1BG", "A1BG-AS1", "A2M-AS1"))
+   checkTrue(max(mtx) < 100)
 
 } # test_expressionMatrices
 #------------------------------------------------------------------------------------------------------------------------
