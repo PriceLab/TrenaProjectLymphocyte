@@ -55,7 +55,7 @@ test_footprintDatabases <- function()
 #------------------------------------------------------------------------------------------------------------------------
 test_expressionMatrices <- function()
 {
-   expected <- c("GTEX.wholeBlood.rna-seq")
+   expected <- c("GTEX.wholeBlood.rna-seq", "GTEX.wholeBlood.rna-seq-geneSymbols")
    checkTrue(all(expected %in% getExpressionMatrixNames(tProj)))
 
    mtx <- getExpressionMatrix(tProj, expected[1])
