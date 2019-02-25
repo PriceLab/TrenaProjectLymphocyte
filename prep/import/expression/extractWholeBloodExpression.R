@@ -32,6 +32,35 @@ new.rownames <- sub("\\.[0-9]", "", rownames(mtx))
 rownames(mtx) <- new.rownames
 
 mtx[1:10, 1:10]
+fivenum(mtx)
+mtx <- asinh(mtx)
+fivenum(mtx)
 
-save(mtx, file="../../../inst/extdata/expression/GTEX.wholeBlood.rna-seq.RData")
+means <- apply(mtx, 1, mean)
+as.integer(fivenum(means))  #   0  0  0  3 16
+length(which(means > 0.5))  # 26k
+keepers <- names(which(means > 0.5))
+mtx <- mtx.asinh[keepers,]
+dim(mtx)   # 26331
+save(mtx, file="../../../inst/extdata/expression/GTEX.wholeBlood.rna-seq.filtered.RData")
+
+load(system.file(package="TrenaProject", "extdata", "geneInfoTable_hg38.RData"))
+dim(tbl.geneInfo)
+
+matches <- match(rownames(mtx), tbl.geneInfo$ensg)
+length(matches) # 26331
+syms <- tbl.geneInfo$geneSymbol[matches]
+rownames(mtx) <- syms
+deleters <- which(is.na(rownames(mtx)))
+length(deleters)
+mtx <- mtx[-deleters,]
+dim(mtx)
+
+mtx[1:10, 1:10]
+save(mtx, file="../../../inst/extdata/expression/GTEX.wholeBlood.rna-seq.filtered.RData")
+
+
+
+
+
 
