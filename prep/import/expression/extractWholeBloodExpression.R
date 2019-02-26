@@ -57,7 +57,7 @@ mtx <- mtx[-deleters,]
 dim(mtx)
 
 mtx[1:10, 1:10]
-save(mtx, file="../../../inst/extdata/expression/GTEX.wholeBlood.rna-seq.filtered.RData")
+save(mtx, file="../../../inst/extdata/expression/GTEX.wholeBlood.rna-seq-geneSymbols.filtered.RData")
 
 
 
