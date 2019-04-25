@@ -1,12 +1,12 @@
 Package: TrenaProjectLymphocyte
 Title: Lymphocyte gene expression and variant data
-Date: 2019-02-27
-Version: 0.99.08
+Date: 2019-04-24
+Version: 0.99.10
 Author: Paul Shannon
 Maintainer: Paul Shannon <pshannon@systemsbiology.org>
 Description: Trena and TrenaViz project to explore lymphocyte gene regulation
 Imports: methods
-Depends: R (>= 3.5.0), TrenaProject
+Depends: R (>= 3.5.0), TrenaProjectHG38 (>= 0.99.43)
 License: Apache 2.0
 Encoding: UTF-8
 LazyData: true

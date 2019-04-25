@@ -13,7 +13,7 @@
 #'
 
 .TrenaProjectLymphocyte <- setClass("TrenaProjectLymphocyte",
-                                  contains="TrenaProject")
+                                  contains="TrenaProjectHG38")
 
 #----------------------------------------------------------------------------------------------------
 #' Define an object of class TrenaProjectLymphocyte
@@ -52,15 +52,19 @@ TrenaProjectLymphocyte <- function(quiet=TRUE)
 
    stopifnot(file.exists(expressionDirectory))
 
-   .TrenaProjectLymphocyte(TrenaProject(supportedGenes=geneSets[[1]],
-                                        genomeName=genomeName,
-                                        footprintDatabaseHost=footprintDatabaseHost,
-                                        footprintDatabaseNames=footprintDatabaseNames,
-                                        expressionDirectory=expressionDirectory,
-                                        variantsDirectory=variantsDirectory,
-                                        covariatesFile=covariatesFile,
-                                        quiet=quiet
-                                        ))
+     # TODO: this should be hidden by, provided by TrenaProjectHG38:
+   geneInfoTable.path <- system.file(package="TrenaProjectHG38", "extdata", "geneInfoTable.RData")
+
+   .TrenaProjectLymphocyte(TrenaProjectHG38(projectName="TrenaProject Lymphocyte",
+                                            supportedGenes=geneSets[[2]],
+                                            geneInfoTable.path=geneInfoTable.path,
+                                            footprintDatabaseHost=footprintDatabaseHost,
+                                            footprintDatabaseNames=footprintDatabaseNames,
+                                            expressionDirectory=expressionDirectory,
+                                            variantsDirectory=variantsDirectory,
+                                            covariatesFile=covariatesFile,
+                                            quiet=quiet
+                                            ))
 
 } # TrenaProjectLymphocyte, the constructor
 #----------------------------------------------------------------------------------------------------

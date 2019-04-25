@@ -14,3 +14,5 @@ check:
 test:
 	for x in inst/unitTests/test_*.R; do echo $$x; R -f $$x; done
 
+tv:
+	R -f inst/demos/trenaViz/tv.R 

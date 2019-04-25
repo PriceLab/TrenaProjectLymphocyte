@@ -1,0 +1,13 @@
+# informally taken from "Molecular and cellular insights into T cell exhaustion, Wherry and Kurachi, nature reviews immunology, 2015
+BTLA
+CD244
+CXCR3
+EOMES
+HAVCR2
+IL11
+IL6
+IL7
+LAG3
+PDCD1
+TGFB1
+TIGIT

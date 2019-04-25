@@ -46,7 +46,7 @@ mtx.target <- mtx.blood
 mtx.target <- mtx.wholeBlood
 
 cors <- lapply(tfs.ensg.in.mtx, function(tf) cor(mtx.target[tf,], mtx.target[target.ensg,]))
-hist(as.numeric(cors), main=target.gene)
+hist(as.numeric(cors), main=sprintf("all blood: %s", target.gene))
 hist(mtx, main="mtx asinh")
 
 

@@ -21,7 +21,7 @@ test_constructor <- function()
 {
    message(sprintf("--- test_constructor"))
 
-   checkTrue(all(c("TrenaProjectLymphocyte", "TrenaProject") %in% is(tProj)))
+   checkTrue(all(c("TrenaProjectLymphocyte", "TrenaProjectHG38", "TrenaProject") %in% is(tProj)))
 
 } # test_constructor
 #------------------------------------------------------------------------------------------------------------------------
@@ -29,7 +29,7 @@ test_supportedGenes <- function()
 {
    message(sprintf("--- test_supportedGenes"))
 
-   subset.expected <- c("MICA")
+   subset.expected <- c("EOMES", "IL6")
    checkTrue(all(subset.expected %in% getSupportedGenes(tProj)))
 
 } # test_supportedGenes
@@ -79,23 +79,23 @@ test_setTargetGene <- function()
 {
    message(sprintf("--- test_setTargetGene"))
 
-   setTargetGene(tProj, "MICA")
-   checkEquals(getTargetGene(tProj), "MICA")
+   setTargetGene(tProj, "EOMES")
+   checkEquals(getTargetGene(tProj), "EOMES")
 
    message(sprintf("    transcripts"))
    tbl.transcripts <- getTranscriptsTable(tProj)
    checkTrue(nrow(tbl.transcripts) == 1)
-   checkEquals(tbl.transcripts$chr, "chr6")
+   checkEquals(tbl.transcripts$chr, "chr3")
 
-   checkEquals(tbl.transcripts$start, 31399784)
-   checkEquals(tbl.transcripts$end , 31415315)
-   checkEquals(tbl.transcripts$tss, 31403579)
-   checkEquals(tbl.transcripts$strand, 1)
+   checkEquals(tbl.transcripts$start, 27715949)
+   checkEquals(tbl.transcripts$end,  27722711)
+   checkEquals(tbl.transcripts$tss, 27722498)
+   checkEquals(tbl.transcripts$strand, -1)
 
    message(sprintf("    geneRegion"))
    region <- getGeneRegion(tProj, flankingPercent=0)
    checkTrue(all(c("chromLocString", "chrom", "start", "end") %in% names(region)))
-   checkEquals(region$chromLocString, "chr6:31399784-31415315")
+   checkEquals(region$chromLocString, "chr3:27715949-27722711")
 
    message(sprintf("    enhancers"))
    tbl.enhancers <- getEnhancers(tProj)
@@ -105,15 +105,15 @@ test_setTargetGene <- function()
    message(sprintf("    geneGeneEnhancersRegion"))
    region <- getGeneEnhancersRegion(tProj, flankingPercent=0)
    checkTrue(all(c("chromLocString", "chrom", "start", "end") %in% names(region)))
-   checkEquals(region$chromLocString, "chr6:30554823-32372101")
+   checkEquals(region$chromLocString, "chr3:27712200-28137803")
 
    message(sprintf("    encode DHS"))
    tbl.dhs <- getEncodeDHS(tProj)
-   checkTrue(nrow(tbl.dhs) > 1900)
+   checkTrue(nrow(tbl.dhs) > 200)
 
    message(sprintf("    ChIP-seq"))
    tbl.chipSeq <- with(tbl.transcripts, getChipSeq(tProj, chrom=chrom, start=start, end=end, tfs="BCLAF1"))
-   checkEquals(nrow(tbl.chipSeq), 2)
+   checkEquals(nrow(tbl.chipSeq), 1)
 
 } # test_setTargetGene
 #------------------------------------------------------------------------------------------------------------------------
