@@ -1,9 +1,12 @@
+
 biocGet <- function (pkgs){
    library(BiocManager)
    BiocManager::install(pkgs)
    }
 
-pkgs.needed <- c("motifmatchr",
+pkgs.needed <- c("devtools",
+                 "shiny",
+                 "motifmatchr",
                  "TFBSTools",
                  "universalmotif",
                  "ggseqlogo",
@@ -30,3 +33,6 @@ pkgs.needed <- c("motifmatchr",
 
 biocGet(pkgs.needed)
 
+library(devtools)
+install_github("paul-shannon/igvShiny")
+install_github("paul-shannon/cyjShiny")
