@@ -1,5 +1,5 @@
 library(TrenaViz)
-stopifnot(packageVersion("TrenaProject") >= "0.99.03")
+stopifnot(packageVersion("TrenaProject") >= "1.0.0")
 stopifnot(packageVersion("TrenaProjectHG38") >= "0.99.43")
 tv <- TrenaViz("TrenaProjectLymphocyte")
 PORT=5874
