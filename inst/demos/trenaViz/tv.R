@@ -1,4 +1,8 @@
 library(TrenaViz)
+stopifnot(packageVersion("TrenaProject") >= "0.99.03")
+stopifnot(packageVersion("TrenaProjectHG38") >= "0.99.43")
 tv <- TrenaViz("TrenaProjectLymphocyte")
-runApp(createApp(tv, port=5838))
-later(function(){browseURL("http://0.0.0.0:5838")}, 2)
+PORT=5874
+runApp(createApp(tv, port=PORT))
+url <- sprintf("http://0.0.0.0:%d", PORT)
+later(function(){browseURL(url)}, 2)
