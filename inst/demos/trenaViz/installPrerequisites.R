@@ -5,7 +5,6 @@ biocGet <- function (pkgs){
    }
 
 pkgs.needed <- c("devtools",
-                 "shiny",
                  "motifmatchr",
                  "TFBSTools",
                  "universalmotif",
@@ -25,9 +24,10 @@ pkgs.needed <- c("devtools",
                  "S4Vectors",
                  "BiocGenerics",
                  "DT",
+                 "V8",
+                 "shiny",
                  "shinydashboard",
                  "shinyjs",
-                 "shiny",
                  "colourpicker",
                  "RColorBrewer")
 
