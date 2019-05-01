@@ -1,1 +1,4 @@
 prep/
+inst/extdata/expression/GTEX.wholeBlood.rna-seq.RData
+inst/extdata/expression/GTEX.wholeBlood.rna-seq.filtered.RData
+inst/extdata/expression/GTEx.lymphocyte.ensg.matrix.asinh.RData
