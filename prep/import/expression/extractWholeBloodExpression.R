@@ -28,21 +28,30 @@ length(intersect(id.oi, colnames(mtx.gtex)))
 # extract from the big all-tissue matrix
 mtx <- mtx.gtex[, id.oi]
 dim(mtx)   # 56202 407
-new.rownames <- sub("\\.[0-9]", "", rownames(mtx))
+new.rownames <- sub("\\.[0-9]*", "", rownames(mtx))
 rownames(mtx) <- new.rownames
 
+irf4 <- "ENSG00000137265"
+tet2 <- "ENSG00000168769"
+
+mtx[irf4,]
+mtx[tet2,]
 mtx[1:10, 1:10]
 fivenum(mtx)
 mtx <- asinh(mtx)
 fivenum(mtx)
 
-means <- apply(mtx, 1, mean)
-as.integer(fivenum(means))  #   0  0  0  3 16
-length(which(means > 0.5))  # 26k
-keepers <- names(which(means > 0.5))
-mtx <- mtx.asinh[keepers,]
+maxes <- apply(mtx, 1, max)
+keepers <- which(maxes > 3)
+length(keepers)
+
+irf4 %in% names(keepers)
+tet2 %in% names(keepers)
+# length(intersect(names(keepers), allKnownTFs()))
+
+mtx <- mtx[keepers,]
 dim(mtx)   # 26331
-save(mtx, file="../../../inst/extdata/expression/GTEX.wholeBlood.rna-seq.filtered.RData")
+save(mtx, file="../../../inst/extdata/expression/GTEX.wholeBlood.rna-seq.filtered.ensg.RData")
 
 load(system.file(package="TrenaProject", "extdata", "geneInfoTable_hg38.RData"))
 dim(tbl.geneInfo)
@@ -50,14 +59,25 @@ dim(tbl.geneInfo)
 matches <- match(rownames(mtx), tbl.geneInfo$ensg)
 length(matches) # 26331
 syms <- tbl.geneInfo$geneSymbol[matches]
+length(intersect(allKnownTFs(), syms))
+"IRF4" %in% syms
+"TET2" %in% syms
+
 rownames(mtx) <- syms
+length(which(is.na(rownames(mtx))))
 deleters <- which(is.na(rownames(mtx)))
 length(deleters)
 mtx <- mtx[-deleters,]
 dim(mtx)
 
+all(c("IRF4", "TET2", "LAG3", "PDCD1", "HAVCR2") %in% rownames(mtx))
+ensgs.to.delete <- grep("^ENSG", rownames(mtx))
+length(ensgs.to.delete)
+mtx <- mtx[-ensgs.to.delete,]
+dim(mtx)
+setdiff(c("IRF4", "TET2", "LAG3", "PDCD1", "HAVCR2"), rownames(mtx))
 mtx[1:10, 1:10]
-save(mtx, file="../../../inst/extdata/expression/GTEX.wholeBlood.rna-seq-geneSymbols.filtered.RData")
+save(mtx, file="../../../inst/extdata/expression/GTEX.wholeBlood.rna-seq-geneSymbols.22330.RData")
 
 
 
