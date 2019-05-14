@@ -57,6 +57,7 @@ basic.build.spec <- list(title="footprint-based-tf-model-builder-for-GTEx-lympho
                          databases=desired.footprint.databases,
                          annotationDbFile=dbfile(org.Hs.eg.db),
                          motifDiscovery="builtinFimo",
+                         motifSpeciesRestriction="hsapiens",
                          tfPool=tf.pool,
                          tfMapping=c("MotifDB"),
                          tfPrefilterCorrelation=tfPrefilterCorrelation,

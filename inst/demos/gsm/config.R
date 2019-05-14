@@ -1,13 +1,15 @@
 library(RUnit)
 library(GenomicRanges)
 library(TrenaProjectLymphocyte)
+library(MotifDb)
 
 printf("--- reading config.R")
 
 trenaProject <- TrenaProjectLymphocyte()
 
 stopifnot(packageVersion("TrenaProject") >= "1.0.6")
-stopifnot(packageVersion("TrenaProjectLymphocyte") >= "0.99.14")
+stopifnot(packageVersion("TrenaProjectHG38") >= "0.99.45")
+stopifnot(packageVersion("TrenaProjectLymphocyte") >= "0.99.17")
 
 getExpressionMatrixNames(trenaProject)
   # "GTEx.lymphocyte.ensg.matrix.asinh"
@@ -17,11 +19,11 @@ getExpressionMatrixNames(trenaProject)
   # "GTEX.wholeBlood.rna-seq.filtered"
   # "GTEX.wholeBlood.rna-seq"
 
-matrix.name <- "GTEx.lymphocyte.geneSymbols.matrix.asinh"
+matrix.name <- "GTEX.lymphocyte.rna-seq-geneSymbols.21415x130"
 stopifnot(matrix.name %in% getExpressionMatrixNames(trenaProject))
 mtx <- getExpressionMatrix(trenaProject, matrix.name)
-mtx.ensg <- getExpressionMatrix(trenaProject, "GTEx.lymphocyte.ensg.matrix.asinh")
-some.key.genes <- c("PDCD1", "IRF4", "TET2", "LAG3", "TIM3")
+some.key.genes <- c("IRF4", "TET2", "LAG3", "PDCD1", "HAVCR2")   # jocelyn has PD1 and TIM3 for the last two
+all(some.key.genes %in% rownames(mtx))
 
 tbl.geneHancer <- get(load(system.file(package="TrenaProject", "extdata", "genomeAnnotation", "geneHancer.v4.7.allGenes.RData")))
 tbl.geneInfo <- get(load(system.file(package="TrenaProject", "extdata", "geneInfoTable_hg38.RData")))

@@ -165,5 +165,50 @@ test_buildSingleGeneModel <- function()
 
 } # test_buildSingleGeneModel
 #------------------------------------------------------------------------------------------------------------------------
+test_buildSingleGeneModel_IRF4 <- function()
+{
+   printf("--- test_buildSingleGeneModel_IRF4")
+
+   genome <- "hg38"
+   targetGene <- "IRF4"
+   setTargetGene(tp, targetGene)
+   tbl.info <- getTranscriptsTable(tp)
+
+   chromosome <- tbl.info$chrom
+   tss <- tbl.info$tss
+      # strand-aware start and end: atf1 is on the + strand
+   start <- tss - 5000
+   end   <- tss + 5000
+
+   tbl.regions <- data.frame(chrom=chromosome, start=start, end=end, stringsAsFactors=FALSE)
+   mtx <- getExpressionMatrix(tp, "GTEX.lymphocyte.rna-seq-geneSymbols.21415x130")
+
+   fpdbs <- c("lymphoblast_hint_20")
+
+   build.spec <- list(title="unit test on IRF4",
+                      type="footprint.database",
+                      regions=tbl.regions,
+                      geneSymbol=targetGene,
+                      tss=tss,
+                      matrix=mtx,
+                      db.host="khaleesi.systemsbiology.net",
+                      db.port=5432,
+                      databases=fpdbs,
+                      annotationDbFile=dbfile(org.Hs.eg.db),
+                      motifDiscovery="builtinFimo",
+                      motifSpeciesRestriction="hsapiens",
+                      tfPool=allKnownTFs(),
+                      tfMapping="MotifDB",
+                      tfPrefilterCorrelation=0.1,
+                      orderModelByColumn="rfScore",
+                      solverNames=c("lasso", "lassopv", "pearson", "randomForest", "ridge", "spearman"))
+
+   fpBuilder <- FootprintDatabaseModelBuilder(genome, targetGene,  build.spec, quiet=TRUE)
+   suppressWarnings(x <- build(fpBuilder))
+   checkEquals(sort(names(x)), c("model", "regulatoryRegions"))
+   checkTrue(nrow(x$model) > 5)
+
+} # test_buildSingleGeneModel
+#------------------------------------------------------------------------------------------------------------------------
 if(!interactive())
    runTests()
