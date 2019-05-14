@@ -6,7 +6,7 @@ build:
 	(cd ..; R CMD build --no-build-vignettes TrenaProjectLymphocyte)
 
 install:
-	(cd ..; R CMD INSTALL TrenaProjectLymphocyte)
+	(cd ..; R CMD INSTALL --no-test-load TrenaProjectLymphocyte)
 
 check:
 	(cd ..; R CMD check `ls -t TrenaProjectLymphocyte) | head -1`)
