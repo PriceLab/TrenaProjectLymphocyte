@@ -41,7 +41,13 @@ test_variants <- function()
 {
    message(sprintf("--- test_variants"))
 
-   checkTrue("sebastiani.2017.gwas" %in% getVariantDatasetNames(tp))
+     # this variant file mentioned here is very large, not kept in the github repo
+     # and thus not in any but the "home" machine for this class - currently pshannon's
+     # riptide
+
+   if(file.exists(system.file(package="TrenaProjectLymphoctye", "extdata", "variants",
+                              "sebastiani.2017.gwas.RData")))
+       checkTrue("sebastiani.2017.gwas" %in% getVariantDatasetNames(tp))
 
 } # test_variants
 #------------------------------------------------------------------------------------------------------------------------

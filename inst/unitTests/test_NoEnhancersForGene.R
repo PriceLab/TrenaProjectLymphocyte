@@ -30,6 +30,7 @@ test_OR4G11P <- function()
                       tss=xt$tss,
                       matrix=mtx.L,
                       db.host="khaleesi.systemsbiology.net",
+                      db.port=5432,
                       databases="lymphoblast_hint_20",
                       annotationDbFile=dbfile(org.Hs.eg.db),
                       motifDiscovery="builtinFimo",
