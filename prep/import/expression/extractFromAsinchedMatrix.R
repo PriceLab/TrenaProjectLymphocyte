@@ -1,5 +1,5 @@
-library(TrenaProject)
-print(load(system.file(package="TrenaProject", "extdata", "geneInfoTable_hg38.RData")))
+library(TrenaProjectHG38)
+print(load(system.file(package="TrenaProjectHG38", "extdata", "geneInfoTable_hg38.RData")))
 library(trenaSGM)  # for allKnownTFs
 print(load("mtx.gtex.asinh.RData"))
 mtx <- mtx.gtex.a
