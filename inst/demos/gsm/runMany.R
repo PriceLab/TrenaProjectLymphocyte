@@ -31,7 +31,8 @@ configurationFile <- "config.R"
 stopifnot(file.exists(configurationFile))
 
 if(!exists("configurationFileRead") || !configurationFileRead)
-  source(configurationFile)
+    source(configurationFile)
+browser()
 #------------------------------------------------------------------------------
 if(!interactive()){
    args <- commandArgs(trailingOnly=TRUE)

@@ -9,17 +9,11 @@ trenaProject <- TrenaProjectLymphocyte()
 
 stopifnot(packageVersion("TrenaProject") >= "1.0.6")
 stopifnot(packageVersion("TrenaProjectHG38") >= "0.99.45")
-stopifnot(packageVersion("TrenaProjectLymphocyte") >= "0.99.17")
+stopifnot(packageVersion("TrenaProjectLymphocyte") >= "0.99.21")
 
 getExpressionMatrixNames(trenaProject)
-  # "GTEx.lymphocyte.ensg.matrix.asinh"
-  # "GTEx.lymphocyte.geneSymbols.matrix.asinh"
-  # "GTEX.wholeBlood.rna-seq-geneSymbols.filtered"
-  # "GTEX.wholeBlood.rna-seq-geneSymbols"
-  # "GTEX.wholeBlood.rna-seq.filtered"
-  # "GTEX.wholeBlood.rna-seq"
+matrix.name <- "GTEX.wholeBlood.rna-seq-geneSymbols.22330x407"
 
-matrix.name <- "GTEX.lymphocyte.rna-seq-geneSymbols.21415x130"
 stopifnot(matrix.name %in% getExpressionMatrixNames(trenaProject))
 mtx <- getExpressionMatrix(trenaProject, matrix.name)
 some.key.genes <- c("IRF4", "TET2", "LAG3", "PDCD1", "HAVCR2")   # jocelyn has PD1 and TIM3 for the last two
@@ -28,7 +22,7 @@ all(some.key.genes %in% rownames(mtx))
 tbl.geneHancer <- get(load(system.file(package="TrenaProject", "extdata", "genomeAnnotation", "geneHancer.v4.7.allGenes.RData")))
 tbl.geneInfo <- get(load(system.file(package="TrenaProject", "extdata", "geneInfoTable_hg38.RData")))
 
-OUTPUTDIR <- "/tmp/MODELS.lymphocyte.GTEx.lymphocyte.geneSymbols.matrix.asinh"
+OUTPUTDIR <- "/local/gsm/TrenaProjectLymphocyte/2019-may-17-GTEX.wholeBlood-geneSymbols-22330x407"
 
 if(!file.exists(OUTPUTDIR))
    dir.create(OUTPUTDIR)
@@ -161,7 +155,8 @@ runTests <- function()
 if(!interactive()){
    runTests()
    test.goi <- as.character(pickGuineaPigGenes(mtx))
-   goi <- rownames(mtx)
+   goi <- sort(rownames(mtx))
+   printf("--- runMany on goi, length: %d", length(goi))
    configurationFileRead <- TRUE
    tfPrefilterCorrelation=0.1
    correlationThreshold=0.1
