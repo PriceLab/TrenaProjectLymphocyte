@@ -75,6 +75,7 @@ ensgs.to.delete <- grep("^ENSG", rownames(mtx))
 length(ensgs.to.delete)
 mtx <- mtx[-ensgs.to.delete,]
 dim(mtx)
+
 setdiff(c("IRF4", "TET2", "LAG3", "PDCD1", "HAVCR2"), rownames(mtx))
 mtx[1:10, 1:10]
 save(mtx, file="../../../inst/extdata/expression/GTEX.wholeBlood.rna-seq-geneSymbols.22330.RData")
