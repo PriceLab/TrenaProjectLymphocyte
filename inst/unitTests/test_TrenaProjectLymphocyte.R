@@ -64,17 +64,19 @@ test_footprintDatabases <- function()
 #------------------------------------------------------------------------------------------------------------------------
 test_expressionMatrices <- function()
 {
-   expected <- c("GTEX.wholeBlood.rna-seq", "GTEX.wholeBlood.rna-seq-geneSymbols")
+   expected <- c("GTEX.wholeBlood.rna-seq-geneSymbols.22330x407",
+                 "GTEX.lymphocyte.rna-seq-geneSymbols.21415x130")
+
    checkTrue(all(expected %in% getExpressionMatrixNames(tp)))
 
    mtx <- getExpressionMatrix(tp, expected[1])
-   checkEquals(dim(mtx), c(56202, 407))
-   checkEquals(head(sort(rownames(mtx)), n=3), c("ENSG000000000030", "ENSG00000000005","ENSG00000000419"))
+   checkEquals(dim(mtx), c(22330, 407))
+   checkEquals(head(sort(rownames(mtx)), n=3), c("A1BG", "A1BG-AS1", "A1CF"))
    checkTrue(max(mtx) < 100)
 
    mtx <- getExpressionMatrix(tp, expected[2])
-   checkEquals(dim(mtx), c(45245, 407))
-   checkEquals(head(sort(rownames(mtx)), n=3), c("A1BG", "A1BG-AS1", "A2M-AS1"))
+   checkEquals(dim(mtx), c(21415, 130))
+   checkEquals(head(sort(rownames(mtx)), n=3), c("A1BG", "A1BG-AS1", "A1CF"))
    checkTrue(max(mtx) < 100)
 
 } # test_expressionMatrices
@@ -108,13 +110,14 @@ test_setTargetGene <- function()
 
    message(sprintf("    enhancers"))
    tbl.enhancers <- getEnhancers(tp)
-   checkEquals(colnames(tbl.enhancers), c("chrom", "start", "end", "type", "combinedScore", "geneSymbol"))
+   checkEquals(head(colnames(tbl.enhancers)), c("chrom", "start", "end", "gene", "eqtl", "hic"))
+
    checkTrue(nrow(tbl.enhancers) >= 0)
 
    message(sprintf("    geneGeneEnhancersRegion"))
    region <- getGeneEnhancersRegion(tp, flankingPercent=0)
    checkTrue(all(c("chromLocString", "chrom", "start", "end") %in% names(region)))
-   checkEquals(region$chromLocString, "chr3:27712200-28137803")
+   checkEquals(region$chrom, "chr3")  # start and end likely to change over time with genehancer updates
 
    message(sprintf("    encode DHS"))
    tbl.dhs <- getEncodeDHS(tp)
@@ -142,7 +145,10 @@ test_buildSingleGeneModel <- function()
    end   <- tss + 5000
 
    tbl.regions <- data.frame(chrom=chromosome, start=start, end=end, stringsAsFactors=FALSE)
-   mtx <- getExpressionMatrix(tp, "GTEx.lymphocyte.geneSymbols.matrix.asinh")
+   matrix.name <-"GTEX.wholeBlood.rna-seq-geneSymbols.22330x407"
+   checkTrue(matrix.name %in% getExpressionMatrixNames(tp))
+
+   mtx <- getExpressionMatrix(tp, matrix.name)
 
    fpdbs <- c("lymphoblast_hint_16", "lymphoblast_hint_20", "lymphoblast_wellington_16", "lymphoblast_wellington_20")[1:2]
 
@@ -167,7 +173,8 @@ test_buildSingleGeneModel <- function()
    suppressWarnings(x <- build(fpBuilder))
    checkEquals(sort(names(x)), c("model", "regulatoryRegions"))
    checkTrue(nrow(x$model) > 5)
-   checkTrue(all(c("TBX15", "JUN", "SOX9") %in% head(x$model$gene, n=10)))
+   some.expected.tfs <- c("RUNX3", "EOMES", "TBX21")
+   checkTrue(all(some.expected.tfs %in% head(x$model$gene, n=10)))
 
 } # test_buildSingleGeneModel
 #------------------------------------------------------------------------------------------------------------------------
@@ -186,8 +193,20 @@ test_buildSingleGeneModel_IRF4 <- function()
    start <- tss - 5000
    end   <- tss + 5000
 
-   tbl.regions <- data.frame(chrom=chromosome, start=start, end=end, stringsAsFactors=FALSE)
    mtx <- getExpressionMatrix(tp, "GTEX.lymphocyte.rna-seq-geneSymbols.21415x130")
+
+   # for a very small model + regions
+   # mtx <- getExpressionMatrix(tp, "GTEX.wholeBlood.rna-seq-geneSymbols.22330x407")
+   # start <- tss - 2000
+   # end <- tss + 200
+   # then, with results in hand:
+   #   tbl.model <- head(x$model, n=5)
+   #   tbl.regRaw <- subset(x$regulatoryRegions, geneSymbol %in% tbl.model$gene)
+   #   dups <- which(duplicated(tbl.regRaw$loc))
+   #   tbl.reg  <- tbl.regRaw[-dups,]
+   #   save(tbl.model, tbl.reg, file="../extdata/model.and.regRegions.irf4.top5.RData")
+
+   tbl.regions <- data.frame(chrom=chromosome, start=start, end=end, stringsAsFactors=FALSE)
 
    fpdbs <- c("lymphoblast_hint_20")
 
